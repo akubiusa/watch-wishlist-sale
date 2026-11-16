@@ -31,6 +31,7 @@ public class ItadStoreLowEntry
 
     /// <summary>Lowest prices per shop.</summary>
     [JsonPropertyName("lows")]
+    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
     public IList<ItadLow> Lows { get; } = [];
 }
 

@@ -19,6 +19,7 @@ public class WishlistResponseBody
 {
     /// <summary>Items on the wishlist.</summary>
     [JsonPropertyName("items")]
+    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
     public IList<WishlistItem> Items { get; } = [];
 }
 
