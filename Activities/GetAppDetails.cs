@@ -16,7 +16,8 @@ public class GetAppDetails(IHttpClientFactory httpClientFactory, ILogger<GetAppD
     /// Activity entry point. Fetches and returns the details of the given Steam app ID.
     /// </summary>
     /// <param name="appId">Steam app ID to fetch details for.</param>
-    /// <returns>The app details, or <see langword="null"/> if they cannot be fetched.</returns>
+    /// <returns>The app details, or <see langword="null"/> if Steam reports no data for the app.</returns>
+    /// <exception cref="HttpRequestException">The Steam API returned a non-success HTTP status, so the caller's retry policy can apply.</exception>
     [Function(FunctionNames.GetAppDetailsActivity)]
     public async Task<AppDetails?> GetAppDetailsActivity([ActivityTrigger] long appId)
     {
@@ -27,8 +28,10 @@ public class GetAppDetails(IHttpClientFactory httpClientFactory, ILogger<GetAppD
         using HttpResponseMessage response = await client.GetAsync(new Uri(url));
         if (!response.IsSuccessStatusCode)
         {
-            logger.LogWarning("⚠️ HTTP error: {StatusCode} {ReasonPhrase} ({Url})", (int)response.StatusCode, response.ReasonPhrase, url);
-            return null;
+            throw new HttpRequestException(
+                $"Steam appdetails request failed: {(int)response.StatusCode} {response.ReasonPhrase} ({url})",
+                inner: null,
+                statusCode: response.StatusCode);
         }
 
         await using Stream stream = await response.Content.ReadAsStreamAsync();
