@@ -17,7 +17,7 @@
 - `func start` runs locally. It needs Azurite running in another terminal and a `local.settings.json` (see `docs/local-development.md` and `docs/configuration.md`).
 - To fire the timer without waiting for the hour: `POST http://localhost:7071/admin/functions/RunCrawler` with body `{ "input": "" }`.
 
-There is no test project. Verify changes with the build and a local run against Azurite.
+Run `dotnet test WatchWishlistSale.Tests/WatchWishlistSale.Tests.csproj` for automated tests. Verify changes with the build and a local run against Azurite when applicable.
 
 ## Architecture
 

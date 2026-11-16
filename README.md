@@ -26,6 +26,8 @@ dotnet restore
 
 You must create `local.settings.json`. For details, see [docs/local-development.md](docs/local-development.md).
 
+Run the regression tests with `dotnet test WatchWishlistSale.Tests/WatchWishlistSale.Tests.csproj`.
+
 ## Configuration
 
 Key environment variables are listed below. For details, see [docs/configuration.md](docs/configuration.md).

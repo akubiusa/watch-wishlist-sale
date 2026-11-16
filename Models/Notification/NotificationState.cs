@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace WatchWishlistSale.Models.Notification;
 
 /// <summary>
@@ -25,5 +27,6 @@ public class NotificationState
     public bool Initialized { get; set; }
 
     /// <summary>Map of app ID to the last notified price (yen).</summary>
+    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)]
     public Dictionary<long, decimal> NotifiedPrices { get; } = [];
 }
