@@ -71,7 +71,7 @@ public class GetLowestPrice(IHttpClientFactory httpClientFactory, IConfiguration
 
             // Get the lowest price (JPY) in the Steam shop from the ITAD game ID.
             var storeLowUrl = $"https://api.isthereanydeal.com/games/storelow/v2?key={apiKey}&country=JP&shops={SteamShopId}";
-            using StringContent body = new(JsonSerializer.Serialize(new[] { new { id = lookup.Game.Id } }), Encoding.UTF8, "application/json");
+            using StringContent body = new(JsonSerializer.Serialize(new[] { lookup.Game.Id }), Encoding.UTF8, "application/json");
             using HttpResponseMessage response = await client.PostAsync(new Uri(storeLowUrl), body);
             if (!response.IsSuccessStatusCode)
             {
