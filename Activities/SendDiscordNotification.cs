@@ -26,6 +26,7 @@ public class SendDiscordNotification(IHttpClientFactory httpClientFactory, IConf
     /// </summary>
     /// <param name="notifications">Sale notifications to send.</param>
     /// <returns>A task that completes when sending is done.</returns>
+    /// <exception cref="InvalidOperationException"><c>DISCORD_WEBHOOK_URL</c> is not configured and there are notifications to send, or Discord rejected the request.</exception>
     [Function(FunctionNames.SendDiscordNotificationActivity)]
     [SuppressMessage("Design", "CA1002", Justification = "Durable Functions Activity の入出力は List<T> を直接 JSON シリアライズするため変更不可。")]
     public async Task SendDiscordNotificationActivity([ActivityTrigger] List<SaleNotification> notifications)
@@ -40,8 +41,7 @@ public class SendDiscordNotification(IHttpClientFactory httpClientFactory, IConf
         var webhookUrl = configuration["DISCORD_WEBHOOK_URL"];
         if (string.IsNullOrEmpty(webhookUrl))
         {
-            logger.LogWarning("⚠️ DISCORD_WEBHOOK_URL is not configured. Skipping Discord notification.");
-            return;
+            throw new InvalidOperationException("DISCORD_WEBHOOK_URL is not configured");
         }
 
         HttpClient client = httpClientFactory.CreateClient(nameof(SendDiscordNotification));
